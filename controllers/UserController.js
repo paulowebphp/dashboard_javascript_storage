@@ -10,6 +10,7 @@ class UserController
 
         this.onSubmit();
         this.onEdit();
+        this.selectAll();
 
     }//END constructor
 
@@ -121,6 +122,9 @@ class UserController
             {
 
                 values.photo = content;
+
+                /** Inserir no Session Storage */
+                this.insert(values);
 
                 this.addLine(values);
 
@@ -260,6 +264,63 @@ class UserController
         );
 
     }//END getValues
+
+
+
+
+    getUsersStorage()
+    {
+
+        let users = [];
+
+        if( localStorage.getItem("users") )
+        {
+
+            users = JSON.parse(localStorage.getItem("users"));
+            
+        }//end if
+
+        return users;
+
+    }//END getUsersStorage
+
+
+
+    selectAll()
+    {
+
+        let users = this.getUsersStorage();
+
+        users.forEach( dataUser =>
+        {
+            let user = new User();
+
+            user.loadFromJSON(dataUser);
+
+            this.addLine(user);
+
+        });//end forech
+
+    }//end selectAll
+
+
+
+
+
+    insert( data )
+    {
+
+        let users = this.getUsersStorage();
+
+        users.push(data);
+        
+        /** Iniciando no Session Storatge */
+        // sessionStorage.setItem("users", JSON.stringify(users));//END sessionStorage
+
+        /** Iniciando no Local Storatge */
+        localStorage.setItem("users", JSON.stringify(users));//END localStorage
+
+    }//END insert
 
 
 
