@@ -141,17 +141,15 @@ class User
 
     getNewID()
     {
-        /** Inicializa atributo id a nível de Window, 
-         * para inicializar precisa usar a palavra 
-         * window antes. A partir daí pode-se
-         * usar apenas id que irá referenciar ao escopo
-         * de Window
-         */
-        if( !window.id ) window.id = 0;
+        let usersID = parseInt(localStorage.getItem("usersID"));
 
-        id++;
+        if( !usersID > 0 ) usersID = 0;
 
-        return id;
+        usersID++;
+
+        localStorage.setItem("usersID", usersID);
+
+        return usersID;
 
     }//END getNewID
 
@@ -191,11 +189,31 @@ class User
 
         }//end else
 
-        /** Iniciando no Local Storatge */
+        /** Iniciando/Guardando no Local Storatge */
         localStorage.setItem("users", JSON.stringify(users));
 
     }//END save
 
+
+
+
+
+    remove()
+    {
+
+        let users = User.getUsersStorage();
+
+        users.forEach( (userData, index) =>
+        {
+
+            if( this._id == userData._id ) users.splice(index, 1);
+
+        });//end forEach
+
+        /** Iniciando/Guardando no Local Storatge */
+        localStorage.setItem("users", JSON.stringify(users));
+
+    }//END remove
 
 
 
